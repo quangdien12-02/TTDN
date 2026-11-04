@@ -117,3 +117,5 @@ RBC_HRM_Node_PostgreSQL/
 - `employees` — hồ sơ nhân viên, liên kết phòng ban/chức vụ.
 - `contracts` — hợp đồng lao động, liên kết nhân viên.
 - `accounts` — tài khoản đăng nhập, vai trò và liên kết hồ sơ nhân viên.
+# TTDN
+dienvu120204
