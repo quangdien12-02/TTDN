@@ -1,0 +1,225 @@
+<%- include('partials/header',{title}) %>
+<div class="page-heading">
+<div>
+<div class="eyebrow">DATA MANAGEMENT</div>
+<h1>
+<%= config.title %>
+</h1>
+<p class="text-secondary mb-0">Quản lý và tra cứu dữ liệu <%= config.title.toLowerCase() %>.</p>
+</div>
+<% if(user.role==='admin'){ %>
+<a class="btn btn-primary" href="<%= config.base %>/new">＋ Thêm mới</a>
+<% } %>
+</div>
+<div class="content-card">
+<form class="search-bar mb-3" method="get" action="<%= config.base %>">
+<div class="search-input">
+<span>⌕</span>
+<input name="q" value="<%= search %>" placeholder="Tìm kiếm theo mã, tên..." aria-label="Từ khóa tìm kiếm">
+</div>
+<% if(resource==='employees'&&user.role==='admin'){ %>
+<select class="form-select filter-select" name="department_id" aria-label="Lọc theo phòng ban">
+<option value="">Tất cả phòng ban</option>
+<% filterOptions.departments.forEach(department=>{ %>
+<option value="<%= department.id %>" <%= filters.department_id===String(department.id)?'selected':'' %>>
+<%= department.name %>
+</option>
+<% }) %>
+</select>
+<select class="form-select filter-select" name="position_id" aria-label="Lọc theo chức vụ">
+<option value="">Tất cả chức vụ</option>
+<% filterOptions.positions.forEach(position=>{ %>
+<option value="<%= position.id %>" <%= filters.position_id===String(position.id)?'selected':'' %>>
+<%= position.name %>
+</option>
+<% }) %>
+</select>
+<select class="form-select filter-select" name="status" aria-label="Lọc theo trạng thái">
+<option value="">Tất cả trạng thái</option>
+<% filterOptions.employeeStatuses.forEach(status=>{ %>
+<option value="<%= status %>" <%= filters.status===status?'selected':'' %>>
+<%= status %>
+</option>
+<% }) %>
+</select>
+<% } else if(resource==='contracts'){ %>
+<select class="form-select filter-select" name="status" aria-label="Lọc theo trạng thái">
+<option value="">Tất cả trạng thái</option>
+<% filterOptions.contractStatuses.forEach(status=>{ %>
+<option value="<%= status %>" <%= filters.status===status?'selected':'' %>>
+<%= status %>
+</option>
+<% }) %>
+</select>
+<select class="form-select filter-select" name="contract_type" aria-label="Lọc theo loại hợp đồng">
+<option value="">Tất cả loại hợp đồng</option>
+<% filterOptions.contractTypes.forEach(type=>{ %>
+<option value="<%= type %>" <%= filters.contract_type===type?'selected':'' %>>
+<%= type %>
+</option>
+<% }) %>
+</select>
+<% } %>
+<button class="btn btn-outline-primary">Tìm kiếm / Lọc</button>
+<% if(search||filters.department_id||filters.position_id||filters.status||filters.contract_type){ %>
+<a class="btn btn-light" href="<%= config.base %>">Xóa lọc</a>
+<% } %>
+<div class="ms-auto text-secondary small">
+<%= rows.length %> kết quả</div>
+</form>
+<div class="table-responsive">
+<table class="table align-middle">
+<thead>
+<tr>
+<% if(resource==='employees'){ %>
+<th>Mã nhân viên</th>
+<th>Họ và tên</th>
+<th>Liên hệ</th>
+<th>Phòng ban</th>
+<th>Chức vụ</th>
+<th>Trạng thái</th>
+<% } else if(resource==='departments'){ %>
+<th>Mã phòng ban</th>
+<th>Tên phòng ban</th>
+<th>Mô tả</th>
+<th>Số nhân viên</th>
+<% } else if(resource==='positions'){ %>
+<th>Mã chức vụ</th>
+<th>Tên chức vụ</th>
+<th>Mô tả</th>
+<th>Số nhân viên</th>
+<% } else { %>
+<th>Mã hợp đồng</th>
+<th>Nhân viên</th>
+<th>Loại hợp đồng</th>
+<th>Thời hạn</th>
+<th>Mức lương</th>
+<th>Trạng thái</th>
+<% } %>
+<% if(user.role==='admin'){ %>
+<th class="text-end">Thao tác</th>
+<% } %>
+</tr>
+</thead>
+<tbody>
+<% rows.forEach(row=>{ %>
+<tr>
+<% if(resource==='employees'){ %>
+<td>
+<span class="code-pill">
+<%= row.employee_code %>
+</span>
+</td>
+<td>
+<div class="person-cell">
+<span class="avatar">
+<%= row.full_name.slice(0,1).toUpperCase() %>
+</span>
+<span class="fw-semibold">
+<%= row.full_name %>
+</span>
+</div>
+</td>
+<td>
+<div>
+<%= row.phone||'—' %>
+</div>
+<small class="text-secondary">
+<%= row.email||'' %>
+</small>
+</td>
+<td>
+<%= row.department_name||'—' %>
+</td>
+<td>
+<%= row.position_name||'—' %>
+</td>
+<td>
+<span class="status-pill <%= row.status==='Đang làm việc'?'status-green':'status-gray' %>">
+<%= row.status %>
+</span>
+</td>
+<% } else if(resource==='departments'){ %>
+<td>
+<span class="code-pill">
+<%= row.code %>
+</span>
+</td>
+<td class="fw-semibold">
+<%= row.name %>
+</td>
+<td>
+<%= row.description||'—' %>
+</td>
+<td>
+<%= row.employee_count %>
+</td>
+<% } else if(resource==='positions'){ %>
+<td>
+<span class="code-pill">
+<%= row.code %>
+</span>
+</td>
+<td class="fw-semibold">
+<%= row.name %>
+</td>
+<td>
+<%= row.description||'—' %>
+</td>
+<td>
+<%= row.employee_count %>
+</td>
+<% } else { %>
+<td>
+<span class="code-pill">
+<%= row.contract_code %>
+</span>
+</td>
+<td>
+<div class="fw-semibold">
+<%= row.full_name %>
+</div>
+<small class="text-secondary">
+<%= row.employee_code %>
+</small>
+</td>
+<td>
+<%= row.contract_type %>
+</td>
+<td>
+<%= String(row.start_date).slice(0,10) %> – <%= row.end_date?String(row.end_date).slice(0,10):'Không thời hạn' %>
+</td>
+<td>
+<%= Number(row.salary).toLocaleString('vi-VN') %> ₫</td>
+<td>
+<span class="status-pill <%= row.status==='Đang hiệu lực'?'status-green':'status-gray' %>">
+<%= row.status %>
+</span>
+</td>
+<% } %>
+<% if(user.role==='admin'){ %>
+<td>
+<div class="d-flex justify-content-end gap-2">
+<a class="btn btn-sm btn-light" href="<%= config.base %>/<%= row.id %>/edit">Sửa</a>
+<form method="post" action="<%= config.base %>/<%= row.id %>?_method=DELETE" data-confirm="Bạn có chắc muốn xóa mục này?">
+<button class="btn btn-sm btn-outline-danger">Xóa</button>
+</form>
+</div>
+</td>
+<% } %>
+</tr>
+<% }) %>
+<% if(!rows.length){ %>
+<tr>
+<td colspan="8" class="empty-state">
+<div class="empty-icon">⌕</div>
+<strong>Không tìm thấy dữ liệu</strong>
+<p>Thử từ khóa khác hoặc thêm bản ghi mới.</p>
+</td>
+</tr>
+<% } %>
+</tbody>
+</table>
+</div>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('../partials/header',{title}) %>
+<div class="page-heading">
+<div>
+<div class="eyebrow">SYSTEM / ACCESS</div>
+<h1>Tài khoản hệ thống</h1>
+<p class="text-secondary mb-0">Quản lý đăng nhập và quyền truy cập.</p>
+</div>
+<a class="btn btn-primary" href="/accounts/new">＋ Tạo tài khoản</a>
+</div>
+<div class="content-card">
+<form class="search-bar mb-3" method="get" action="/accounts">
+<div class="search-input">
+<span>⌕</span>
+<input name="q" value="<%= search %>" placeholder="Tìm tài khoản hoặc nhân viên..." aria-label="Từ khóa tìm kiếm">
+</div>
+<select class="form-select filter-select" name="role" aria-label="Lọc theo vai trò">
+<option value="">Tất cả vai trò</option>
+<option value="admin" <%= filters.role==='admin'?'selected':'' %>>Quản trị viên</option>
+<option value="employee" <%= filters.role==='employee'?'selected':'' %>>Nhân viên</option>
+</select>
+<select class="form-select filter-select" name="status" aria-label="Lọc theo trạng thái">
+<option value="">Tất cả trạng thái</option>
+<option value="active" <%= filters.status==='active'?'selected':'' %>>Đang hoạt động</option>
+<option value="inactive" <%= filters.status==='inactive'?'selected':'' %>>Đã khóa</option>
+</select>
+<button class="btn btn-outline-primary">Tìm kiếm / Lọc</button>
+<% if(search||filters.role||filters.status){ %>
+<a class="btn btn-light" href="/accounts">Xóa lọc</a>
+<% } %>
+<div class="ms-auto text-secondary small">
+<%= rows.length %> kết quả</div>
+</form>
+<div class="table-responsive">
+<table class="table align-middle">
+<thead>
+<tr>
+<th>Tên đăng nhập</th>
+<th>Nhân viên liên kết</th>
+<th>Vai trò</th>
+<th>Trạng thái</th>
+<th class="text-end">Thao tác</th>
+</tr>
+</thead>
+<tbody>
+<% rows.forEach(a=>{ %>
+<tr>
+<td class="fw-semibold">
+<%= a.username %>
+</td>
+<td>
+<%= a.full_name?a.employee_code+' — '+a.full_name:'Chưa liên kết' %>
+</td>
+<td>
+<span class="role-pill">
+<%= a.role==='admin'?'Quản trị viên':'Nhân viên' %>
+</span>
+</td>
+<td>
+<span class="status-pill <%= a.is_active?'status-green':'status-gray' %>">
+<%= a.is_active?'Đang hoạt động':'Đã khóa' %>
+</span>
+</td>
+<td class="text-end">
+<form method="post" action="/accounts/<%= a.id %>/toggle" data-confirm="Bạn có chắc muốn đổi trạng thái tài khoản này?">
+<button class="btn btn-sm btn-outline-secondary">
+<%= a.is_active?'Khóa':'Mở khóa' %>
+</button>
+</form>
+</td>
+</tr>
+<% }) %>
+<% if(!rows.length){ %>
+<tr>
+<td colspan="5" class="text-center text-secondary py-4">Không có tài khoản phù hợp.</td>
+</tr>
+<% } %>
+</tbody>
+</table>
+</div>
+</div>
+<%- include('../partials/footer') %>

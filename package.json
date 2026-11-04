@@ -1,0 +1,22 @@
+{
+  "name": "rbc-hrm-node-postgresql",
+  "version": "1.0.0",
+  "description": "He thong quan ly nhan su RBC Viet Nam - Node.js, Express, EJS, PostgreSQL, Bootstrap",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "db:init": "node scripts/init-db.js",
+    "check": "node --check app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "method-override": "^3.0.0",
+    "pg": "^8.13.1"
+  }
+}

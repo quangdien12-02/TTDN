@@ -1,0 +1,59 @@
+<%- include('partials/header',{title}) %>
+<div class="page-heading">
+<div>
+<div class="eyebrow">DATA MANAGEMENT / FORM</div>
+<h1>
+<%= title %>
+</h1>
+<p class="text-secondary mb-0">Nhập thông tin vào các trường bên dưới.</p>
+</div>
+<a class="btn btn-light" href="<%= config.base %>">← Quay lại</a>
+</div>
+<div class="content-card form-card">
+<% if(error){ %>
+<div class="alert alert-danger">
+<%= error %>
+</div>
+<% } %>
+<form method="post" action="<%= action||config.base %>">
+<div class="row g-3">
+<% config.fields.forEach(field=>{ const name=field[0],label=field[1],type=field[2],required=field[3]; let val=item[name]; if(val instanceof Date) val=val.toISOString().slice(0,10); else if(val!==undefined&&val!==null) val=String(val).slice(0,10) && type==='date'?String(val).slice(0,10):val; %>
+<div class="col-md-<%= type==='textarea'?12:6 %>">
+<label class="form-label" for="<%= name %>">
+<%= label %>
+<%= required?' *':'' %>
+</label>
+<% if(type==='textarea'){ %>
+<textarea class="form-control" id="<%= name %>" name="<%= name %>" rows="3" <%= required?'required':'' %>>
+<%= val||'' %>
+</textarea>
+<% } else if(type==='select'){ %>
+<select class="form-select" id="<%= name %>" name="<%= name %>" <%= required?'required':'' %>>
+<option value="">-- Chọn --</option>
+<% field[4].forEach(opt=>{ %>
+<option value="<%= opt %>" <%= String(val||'')===opt?'selected':'' %>>
+<%= opt %>
+</option>
+<% }) %>
+</select>
+<% } else if(type==='department'||type==='position'||type==='employee'){ const opts=type==='department'?options.departments:type==='position'?options.positions:options.employees; %>
+<select class="form-select" id="<%= name %>" name="<%= name %>" <%= required?'required':'' %>>
+<option value="">-- Chưa chọn --</option>
+<% opts.forEach(o=>{ const ov=type==='employee'?o.id:o.id; const text=type==='employee'?`${o.employee_code} — ${o.full_name}`:o.name; %>
+<option value="<%= ov %>" <%= String(val||'')===String(ov)?'selected':'' %>>
+<%= text %>
+</option>
+<% }) %>
+</select>
+<% } else { %>
+<input class="form-control" id="<%= name %>" name="<%= name %>" type="<%= type %>" value="<%= val===undefined||val===null?'':val %>" <%= required?'required':'' %> <%= type==='number'?'min="0" step="1000"':'' %>> <% } %>
+</div>
+<% }) %>
+</div>
+<div class="form-actions">
+<a class="btn btn-light" href="<%= config.base %>">Hủy</a>
+<button class="btn btn-primary">Lưu thông tin</button>
+</div>
+</form>
+</div>
+<%- include('partials/footer') %>

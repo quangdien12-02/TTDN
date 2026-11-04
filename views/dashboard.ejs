@@ -1,0 +1,119 @@
+<%- include('partials/header',{title}) %>
+<div class="page-heading">
+  <div>
+    <div class="eyebrow">WORKSPACE / OVERVIEW</div>
+    <h1>Tổng quan hệ thống</h1>
+    <p class="text-secondary mb-0">
+      Xin chào <strong><%= user.username %></strong>, chúc bạn một ngày làm việc
+      hiệu quả.
+    </p>
+  </div>
+  <% if(user.role==='admin'){ %><a class="btn btn-primary" href="/employees/new"
+    >＋ Thêm nhân viên</a
+  ><% } %>
+</div>
+<% if(user.role==='admin'){ %>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon purple">♙</div>
+      <div class="stat-label">Tổng nhân viên</div>
+      <div class="stat-number"><%= stats.employees %></div>
+      <div class="stat-note">Hồ sơ trong hệ thống</div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon blue">▦</div>
+      <div class="stat-label">Phòng ban</div>
+      <div class="stat-number"><%= stats.departments %></div>
+      <div class="stat-note">Đơn vị tổ chức</div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon orange">♧</div>
+      <div class="stat-label">Chức vụ</div>
+      <div class="stat-number"><%= stats.positions %></div>
+      <div class="stat-note">Vị trí công việc</div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon green">▤</div>
+      <div class="stat-label">Hợp đồng hiệu lực</div>
+      <div class="stat-number"><%= stats.contracts %></div>
+      <div class="stat-note">Đang được ghi nhận</div>
+    </div>
+  </div>
+</div>
+<div class="content-card">
+  <div class="section-heading">
+    <div>
+      <h2>Nhân viên cập nhật gần đây</h2>
+      <p>Danh sách hồ sơ mới được thêm vào hệ thống</p>
+    </div>
+    <a href="/employees" class="text-link">Xem tất cả →</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Mã nhân viên</th>
+          <th>Họ và tên</th>
+          <th>Phòng ban</th>
+          <th>Chức vụ</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% latest.forEach(e=>{ %>
+        <tr>
+          <td><span class="code-pill"><%= e.employee_code %></span></td>
+          <td class="fw-semibold"><%= e.full_name %></td>
+          <td><%= e.department_name||'Chưa phân công' %></td>
+          <td><%= e.position_name||'Chưa phân công' %></td>
+          <td>
+            <span
+              class="status-pill <%= e.status==='Đang làm việc'?'status-green':'status-gray' %>"
+              ><%= e.status %></span
+            >
+          </td>
+        </tr>
+        <% }) %><% if(!latest.length){ %>
+        <tr>
+          <td colspan="5" class="text-center text-secondary py-4">
+            Chưa có dữ liệu nhân viên.
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } else { %>
+<div class="content-card">
+  <div class="section-heading">
+    <div>
+      <h2>Hồ sơ nhân viên của tôi</h2>
+      <p>Thông tin được liên kết với tài khoản đang đăng nhập</p>
+    </div>
+  </div>
+  <% if(own){ %>
+  <div class="row g-3">
+    <% [['Mã nhân viên',own.employee_code],['Họ và tên',own.full_name],['Phòng ban',own.department_name],['Chức vụ',own.position_name],['Email',own.email],['Số điện thoại',own.phone],['Ngày vào làm',own.hire_date?String(own.hire_date).slice(0,10):'—'],['Trạng thái',own.status]].forEach(x=>{ %>
+    <div class="col-md-6">
+      <div class="profile-field">
+        <span><%= x[0] %></span><strong><%= x[1]||'—' %></strong>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } else { %>
+  <div class="alert alert-info mb-0">
+    Tài khoản này chưa được liên kết với hồ sơ nhân viên. Vui lòng liên hệ quản
+    trị viên.
+  </div>
+  <% } %>
+</div>
+<% } %> <%- include('partials/footer') %>

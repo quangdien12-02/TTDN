@@ -1,0 +1,65 @@
+<%- include('../partials/header',{title}) %>
+<div class="page-heading">
+  <div>
+    <div class="eyebrow">SYSTEM / ACCESS</div>
+    <h1>Yêu cầu đặt lại mật khẩu</h1>
+    <p class="text-secondary mb-0">
+      Đặt mật khẩu mới rồi thông báo cho người dùng qua kênh liên hệ an toàn.
+    </p>
+  </div>
+  <a class="btn btn-light" href="/accounts">← Quản lý tài khoản</a>
+</div>
+<div class="content-card">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Tên đăng nhập</th>
+          <th>Nhân viên liên kết</th>
+          <th>Thời gian yêu cầu</th>
+          <th>Đặt mật khẩu mới</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% requests.forEach(request=>{ %>
+        <tr>
+          <td class="fw-semibold"><%= request.username %></td>
+          <td>
+            <%= request.full_name?request.employee_code+' — '+request.full_name:'Chưa liên kết' %>
+          </td>
+          <td><%= new Date(request.requested_at).toLocaleString('vi-VN') %></td>
+          <td>
+            <form
+              class="d-flex gap-2"
+              method="post"
+              action="/accounts/reset-requests/<%= request.id %>"
+            >
+              <input
+                class="form-control"
+                type="password"
+                name="password"
+                minlength="6"
+                autocomplete="new-password"
+                placeholder="Mật khẩu mới"
+                aria-label="Mật khẩu mới cho <%= request.username %>"
+                required
+              /><button class="btn btn-sm btn-primary text-nowrap">
+                Đổi mật khẩu
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }) %> <% if(!requests.length){ %>
+        <tr>
+          <td colspan="4" class="empty-state">
+            <div class="empty-icon">✓</div>
+            <strong>Không có yêu cầu đang chờ</strong>
+            <p>Yêu cầu đặt lại mật khẩu mới sẽ xuất hiện tại đây.</p>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include('../partials/footer') %>
