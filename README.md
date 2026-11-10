@@ -1,4 +1,4 @@
-# RBC HRM — Hệ thống quản lý nhân sự doanh nghiệp
+# Công ty TNHH Bình Minh Số — Hệ thống quản lý nhân sự doanh nghiệp
 
 - **Node.js**: môi trường chạy JavaScript phía máy chủ.
 - **Express.js**: định tuyến và xử lý yêu cầu HTTP.
@@ -30,10 +30,10 @@
 
 ### 1. Tạo cơ sở dữ liệu PostgreSQL
 
-Cài PostgreSQL và mở pgAdmin hoặc SQL Shell (psql). Tạo database tên `rbc_hrm`:
+Cài PostgreSQL và mở pgAdmin hoặc SQL Shell (psql). Tạo database tên `binh_minh_so_hrm`:
 
 ```sql
-CREATE DATABASE rbc_hrm;
+CREATE DATABASE binh_minh_so_hrm;
 ```
 
 ### 2. Cấu hình biến môi trường
@@ -53,21 +53,21 @@ CREATE DATABASE rbc_hrm;
    - `DATABASE_URL=...`: điền thông tin kết nối PostgreSQL như ví dụ bên dưới.
    - `PGSSL=false`: giữ nguyên khi PostgreSQL chạy trên máy tính của bạn. Chỉ đổi thành `true` nếu nhà cung cấp PostgreSQL yêu cầu SSL.
 
-Ví dụ, nếu tên người dùng PostgreSQL là `postgres`, mật khẩu là `MatKhauCuaBan`, PostgreSQL chạy trên máy tính này ở cổng `5432`, và database đã tạo ở bước trước có tên `rbc_hrm`, đặt `DATABASE_URL` như sau:
+Ví dụ, nếu tên người dùng PostgreSQL là `postgres`, mật khẩu là `MatKhauCuaBan`, PostgreSQL chạy trên máy tính này ở cổng `5432`, và database đã tạo ở bước trước có tên `binh_minh_so_hrm`, đặt `DATABASE_URL` như sau:
 
 ```env
-PORT=3001
+PORT=3000
 SESSION_SECRET=thay-bang-mot-chuoi-bi-mat-dai
-DATABASE_URL=postgresql://postgres:MatKhauCuaBan@localhost:5432/rbc_hrm
+DATABASE_URL=postgresql://postgres:MatKhauCuaBan@localhost:5432/binh_minh_so_hrm
 PGSSL=false
 ```
 
-Trong URL trên, thay `MatKhauCuaBan` bằng **mật khẩu PostgreSQL bạn đã đặt khi cài PostgreSQL** (không phải mật khẩu Windows). Nếu bạn dùng tên người dùng khác `postgres`, hãy thay phần `postgres` đứng trước dấu `:`. Nếu đổi tên database hoặc cổng PostgreSQL, hãy cập nhật `rbc_hrm` hoặc `5432` tương ứng. Giữ nguyên `postgresql://`, `@localhost:` và không thêm dấu ngoặc kép vào giá trị.
+Trong URL trên, thay `MatKhauCuaBan` bằng **mật khẩu PostgreSQL bạn đã đặt khi cài PostgreSQL** (không phải mật khẩu Windows). Nếu bạn dùng tên người dùng khác `postgres`, hãy thay phần `postgres` đứng trước dấu `:`. Nếu đổi tên database hoặc cổng PostgreSQL, hãy cập nhật `binh_minh_so_hrm` hoặc `5432` tương ứng. Giữ nguyên `postgresql://`, `@localhost:` và không thêm dấu ngoặc kép vào giá trị.
 
 Nếu mật khẩu có ký tự đặc biệt, hãy URL-encode ký tự đó **chỉ trong phần mật khẩu**. Ví dụ: `@` thành `%40`, `#` thành `%23`, `/` thành `%2F`, và `%` thành `%25`. Chẳng hạn, mật khẩu `abc@123` được ghi là `abc%40123` trong URL:
 
 ```env
-DATABASE_URL=postgresql://postgres:abc%40123@localhost:5432/rbc_hrm
+DATABASE_URL=postgresql://postgres:abc%40123@localhost:5432/binh_minh_so_hrm
 ```
 
 Lưu file `.env` trước khi chạy ứng dụng. Không chia sẻ hoặc đưa file `.env` lên Git vì file này chứa mật khẩu và khóa bí mật.
