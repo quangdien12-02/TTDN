@@ -12,7 +12,7 @@
 | GET/POST/PUT/DELETE | `/employees/:id` và `/employees/:id/edit` | Sửa/xóa nhân viên | Admin |
 | GET/POST/PUT/DELETE | `/departments` và `/departments/:id` | CRUD phòng ban | Admin |
 | GET/POST/PUT/DELETE | `/positions` và `/positions/:id` | CRUD chức vụ | Admin |
-| GET/POST/PUT/DELETE | `/contracts` và `/contracts/:id` | CRUD hợp đồng | Admin |
+| GET/POST/PUT/DELETE | `/positions` và `/positions/:id` | CRUD hợp đồng | Admin |
 | GET/POST | `/accounts`, `/accounts/new` | Danh sách/tạo tài khoản | Admin |
 | POST | `/accounts/:id/toggle` | Khóa/mở khóa tài khoản | Admin |
 | GET | `/health` | Kiểm tra tiến trình web | Công khai |

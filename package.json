@@ -1,7 +1,7 @@
 {
-  "name": "rbc-hrm-node-postgresql",
+  "name": "binh-minh-so-hrm-node-postgresql",
   "version": "1.0.0",
-  "description": "He thong quan ly nhan su RBC Viet Nam - Node.js, Express, EJS, PostgreSQL, Bootstrap",
+  "description": "He thong quan ly nhan su Cong ty TNHH Binh Minh So - Node.js, Express, EJS, PostgreSQL, Bootstrap",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

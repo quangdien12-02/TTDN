@@ -13,8 +13,14 @@ const pool = new Pool({
   ssl: process.env.PGSSL === "true" ? { rejectUnauthorized: false } : false,
 });
 const PORT = Number(process.env.PORT || 3000);
+const COMPANY_NAME = "Công ty TNHH Bình Minh Số";
+const COMPANY_BRAND = "Bình Minh Số";
+const COMPANY_INITIALS = "BMS";
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.locals.companyName = COMPANY_NAME;
+app.locals.companyBrand = COMPANY_BRAND;
+app.locals.companyInitials = COMPANY_INITIALS;
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -698,5 +704,5 @@ app.use((err, req, res, next) => {
   res.status(500).render("error", { title: "Lỗi hệ thống", message: msg });
 });
 app.listen(PORT, () =>
-  console.log(`RBC HRM đang chạy tại http://localhost:${PORT}`),
+  console.log(`${COMPANY_NAME} đang chạy tại http://localhost:${PORT}`),
 );
